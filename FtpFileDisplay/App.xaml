@@ -1,0 +1,300 @@
+﻿<prism:PrismApplication x:Class="FtpFileDisplay.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	         xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:vw="clr-namespace:FtpFileDisplay.Views"
+             xmlns:vm="clr-namespace:FtpFileDisplay.ViewModels"
+             xmlns:models="clr-namespace:FtpFileDisplay.Models"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:FtpFileDisplay">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.BlueGrey.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Indigo.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type vm:FtpSettingDialogViewModel}">
+                <vw:FtpSettingDialog/>
+            </DataTemplate>
+
+            <!--#region SolidColorBrush Code -->
+            <SolidColorBrush x:Key="BlueGray50" Color="#ECEFF1"/>
+            <SolidColorBrush x:Key="BlueGray100" Color="#CFD8DC"/>
+            <SolidColorBrush x:Key="BlueGray200" Color="#B0BEC5"/>
+            <SolidColorBrush x:Key="BlueGray300" Color="#90A4AE"/>
+            <SolidColorBrush x:Key="BlueGray400" Color="#78909C"/>
+            <SolidColorBrush x:Key="BlueGray500" Color="#607D8B"/>
+            <SolidColorBrush x:Key="BlueGray600" Color="#546E7A"/>
+            <SolidColorBrush x:Key="BlueGray700" Color="#455A64"/>
+            <SolidColorBrush x:Key="BlueGray800" Color="#37474F"/>
+            <SolidColorBrush x:Key="BlueGray900" Color="#263238"/>
+
+            <SolidColorBrush x:Key="Orange50" Color="#FFF3E0"/>
+            <SolidColorBrush x:Key="Orange100" Color="#FFE0B2"/>
+            <SolidColorBrush x:Key="Orange200" Color="#FFCC80"/>
+            <SolidColorBrush x:Key="Orange300" Color="#FFB74D"/>
+            <SolidColorBrush x:Key="Orange400" Color="#FFA726"/>
+            <SolidColorBrush x:Key="Orange500" Color="#FF9800"/>
+            <SolidColorBrush x:Key="Orange600" Color="#FB8C00"/>
+            <SolidColorBrush x:Key="Orange700" Color="#F57C00"/>
+            <SolidColorBrush x:Key="Orange800" Color="#EF6C00"/>
+            <SolidColorBrush x:Key="Orange900" Color="#E65100"/>
+
+            <SolidColorBrush x:Key="SearchItemBG" Color="#90A4AE"/>
+            <!--#endregion-->
+            
+            <!-- #region Alert Dialog-->
+            <DataTemplate DataType="{x:Type models:MyAlert}">
+                <StackPanel Margin="0" Width="500" Background="LightGray">
+                    <materialDesign:PackIcon Kind="{Binding Icon}" Width="64" Height="64" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                        <materialDesign:PackIcon.Style>
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Kind" Value="Check"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueDarkBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Information">
+                                        <Setter Property="Foreground" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Check">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Error">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Warning">
+                                        <Setter Property="Foreground" Value="DeepPink"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="QuestionMark">
+                                        <Setter Property="Foreground" Value="Blue"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                    <TextBlock Text="{Binding Text}" HorizontalAlignment="Center" FontSize="20" Margin="20" TextWrapping="Wrap"/>
+                    <Button Content="{materialDesign:PackIcon Kind=Close}" Tag="{Binding CloseText, FallbackValue=닫기}" Style="{DynamicResource SharedBtnIconText}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="10"/>
+                </StackPanel>
+            </DataTemplate>
+            <!-- #endregion -->
+
+            <!-- #region YesNo Dialog-->
+            <DataTemplate DataType="{x:Type models:MyYesNo}">
+                <StackPanel Margin="0" MinWidth="500" Background="LightGray">
+                    <materialDesign:PackIcon Kind="{Binding Icon}" Width="64" Height="64" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                        <materialDesign:PackIcon.Style>
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueDarkBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Information">
+                                        <Setter Property="Foreground" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Check">
+                                        <Setter Property="Foreground" Value="Green"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Error">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="Warning">
+                                        <Setter Property="Foreground" Value="DeepPink"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Icon}" Value="QuestionMark">
+                                        <Setter Property="Foreground" Value="Blue"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                    <TextBlock Text="{Binding Text}" HorizontalAlignment="Center" FontSize="20" Margin="20"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="{materialDesign:PackIcon Kind=Check}" Tag="예" Style="{DynamicResource SharedBtnIconText}" 
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="110" Margin="10">
+                            <Button.CommandParameter>
+                                <system:Boolean>True</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+
+                        <Button Content="{materialDesign:PackIcon Kind=No}" Tag="아니오" Style="{DynamicResource SharedBtnIconText}" 
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="110" Margin="10">
+                            <Button.CommandParameter>
+                                <system:Boolean>False</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+
+                        <Button Content="{materialDesign:PackIcon Kind=Close}" Tag="닫기" Style="{DynamicResource SharedBtnIconText}" 
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="110" Margin="10">
+                            <Button.CommandParameter>
+                                <system:Boolean>False</system:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+            <!-- #endregion -->
+
+
+
+
+            <!--#region Button (ShareBtn, SharedBtnIconText, SharedIcon)-->
+            <Style TargetType="Button" x:Key="SharedBtn" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="SharedBtnIconText" BasedOn="{StaticResource SharedBtn}">
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="5 0">
+                                <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                   FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                   VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Button" x:Key="SharedBtnIcon" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+
+
+            <!--#region DataGrid (DefaultGridCell, CenterGridCell, RightGridCell, DefaultDataGrid, DataGridWithCount) -->
+            <Style x:Key="DefaultGridCell" TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                <Setter Property="Padding" Value="10, 0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border BorderBrush="{StaticResource BlueGray200}" BorderThickness="0, 0, 1, 0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="{StaticResource BlueGray200}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="DefaultDataGrid" TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
+                <Style.Resources>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource DefaultGridCell}"/>
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                        <Setter Property="Background" Value="{StaticResource BlueGray100}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource BlueGray200}"/>
+                        <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </Style.Resources>
+                <Setter Property="RowHeight" Value="25"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="VerticalGridLinesBrush" Value="{StaticResource BlueGray200}"/>
+                <Setter Property="Background" Value="{StaticResource BlueGray50}"/>
+                <Setter Property="materialDesign:DataGridAssist.CellPadding" Value="5"/>
+                <Setter Property="materialDesign:DataGridAssist.ColumnHeaderPadding" Value="5"/>
+            </Style>
+
+            <Style x:Key="CenterGridCell" TargetType="DataGridCell" BasedOn="{StaticResource DefaultGridCell}">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border BorderBrush="{StaticResource BlueGray200}" BorderThickness="0, 0, 1, 0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RightGridCell" TargetType="DataGridCell" BasedOn="{StaticResource DefaultGridCell}">
+                <Setter Property="Padding" Value="10 0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                            <Border BorderBrush="{StaticResource BlueGray200}" BorderThickness="0, 0, 1, 0" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="DataGridWithCount" TargetType="DataGrid" BasedOn="{StaticResource DefaultDataGrid}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGrid}">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                        <ScrollViewer.Template>
+                                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{StaticResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource MaterialDesignDivider}" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                                        <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" />
+                                                    </Border>
+                                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                                    <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                                    <Grid Grid.Column="1" Grid.Row="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                                    </Grid>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </ScrollViewer.Template>
+                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </ScrollViewer>
+
+                                    <Label Grid.Row="1" Content="{Binding ItemsSource.Count, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                       ContentStringFormat="검색결과 : {0} 건" VerticalContentAlignment="Center"
+                                       Background="{StaticResource MaterialDesignDivider}"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#endregion-->
+        </ResourceDictionary>
+    </Application.Resources>
+</prism:PrismApplication>
