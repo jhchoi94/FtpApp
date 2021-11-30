@@ -12,9 +12,9 @@ using Prism.Events;
 
 namespace FtpFileDisplay.Service
 {
-    public class FtpDownloadService
+    public class FtpService
     {
-        log4net.ILog Logger = log4net.LogManager.GetLogger(typeof(FtpDownloadService));
+        log4net.ILog Logger = log4net.LogManager.GetLogger(typeof(FtpService));
         Queue<FtpFileWorkInfo> FtpDownWaitQue;
         Queue<FtpFileWorkInfo> FtpUploadWaitQue;
         Queue<FtpFileWorkInfo> FtpDeleteWaitQue;
@@ -26,7 +26,7 @@ namespace FtpFileDisplay.Service
         IAppConfig AppConfig;
 
         #region [Creator] FtpDownloadService
-        public FtpDownloadService(IEventAggregator eventAggregator)
+        public FtpService(IEventAggregator eventAggregator)
         {
             AppConfig = MainWindowViewModel.AppConfig;
             FtpDownWaitQue = new Queue<FtpFileWorkInfo>();

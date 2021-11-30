@@ -80,7 +80,7 @@
     <Compile Include="Interface\IAppConfig.cs" />
     <Compile Include="Models\MyAlert.cs" />
     <Compile Include="Models\MyYesNo.cs" />
-    <Compile Include="Service\FtpDownloadService.cs" />
+    <Compile Include="Service\FtpService.cs" />
     <Compile Include="ViewModels\Dialog\FtpSettingDialogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Dialog\FtpSettingDialog.xaml.cs">

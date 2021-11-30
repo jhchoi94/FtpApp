@@ -27,7 +27,7 @@ namespace FtpFileDisplay.ViewModels
     {
         log4net.ILog Logger = log4net.LogManager.GetLogger(typeof(MainWindowViewModel));
         const string MainWindowDlg = "MainWindowDlg";
-        FtpDownloadService FtpDownService;
+        FtpService FtpDownService;
         IEventAggregator eventAggregator;
         public static IAppConfig AppConfig;
         MyAlert myAlert = new MyAlert();
@@ -120,7 +120,7 @@ namespace FtpFileDisplay.ViewModels
 
             FileList = new List<FtpFileModel>();
             this.eventAggregator = eventAggregator;
-            FtpDownService = new FtpDownloadService(eventAggregator);
+            FtpDownService = new FtpService(eventAggregator);
         }
         #endregion
 
